@@ -1,4 +1,5 @@
 # rollbar
+
 [![Build Status](https://travis-ci.org/gin-contrib/rollbar.svg)](https://travis-ci.org/gin-contrib/rollbar)
 [![codecov](https://codecov.io/gh/gin-contrib/rollbar/branch/master/graph/badge.svg)](https://codecov.io/gh/gin-contrib/rollbar)
 [![Go Report Card](https://goreportcard.com/badge/github.com/gin-contrib/rollbar)](https://goreportcard.com/report/github.com/gin-contrib/rollbar)
@@ -13,8 +14,8 @@ Middleware to integrate with [rollbar](https://rollbar.com/) error monitoring. I
 
 Download and install it:
 
-```bash
-$ go get github.com/gin-contrib/rollbar
+```sh
+go get github.com/gin-contrib/rollbar
 ```
 
 Import it in your code:
