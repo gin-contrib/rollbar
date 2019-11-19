@@ -3,12 +3,13 @@ package main
 import (
 	"github.com/gin-contrib/rollbar"
 	"github.com/gin-gonic/gin"
-	"github.com/stvp/roll"
+
+	roll "github.com/rollbar/rollbar-go"
 )
 
 func main() {
-	roll.Token = "POST_SERVER_ITEM_ACCESS_TOKEN"
-	//roll.Environment = "production" // defaults to "development"
+	roll.SetToken("MY_TOKEN")
+	// roll.SetEnvironment("production") // defaults to "development"
 
 	r := gin.Default()
 	r.Use(rollbar.Recovery(true))
