@@ -8,7 +8,7 @@ import (
 	"runtime/debug"
 
 	"github.com/gin-gonic/gin"
-	"github.com/stvp/roll"
+	"github.com/rollbar/rollbar-go"
 )
 
 // Recovery middleware for rollbar error monitoring
@@ -20,7 +20,7 @@ func Recovery(onlyCrashes bool) gin.HandlerFunc {
 			if rval := recover(); rval != nil {
 				debug.PrintStack()
 
-				roll.CriticalStack(errors.New(fmt.Sprint(rval)), getCallers(3), map[string]string{
+				rollbar.Critical(errors.New(fmt.Sprint(rval)), getCallers(3), map[string]string{
 					"endpoint": c.Request.RequestURI})
 
 				c.AbortWithStatus(http.StatusInternalServerError)
@@ -28,7 +28,7 @@ func Recovery(onlyCrashes bool) gin.HandlerFunc {
 
 			if !onlyCrashes {
 				for _, item := range c.Errors {
-					roll.Error(item.Err, map[string]string{
+					rollbar.Error(item.Err, map[string]string{
 						"meta":     fmt.Sprint(item.Meta),
 						"endpoint": c.Request.RequestURI,
 					})
