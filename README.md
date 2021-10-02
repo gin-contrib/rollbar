@@ -1,6 +1,6 @@
 # rollbar
 
-[![Build Status](https://travis-ci.org/gin-contrib/rollbar.svg)](https://travis-ci.org/gin-contrib/rollbar)
+[![Run Tests](https://github.com/gin-contrib/rollbar/actions/workflows/go.yml/badge.svg)](https://github.com/gin-contrib/rollbar/actions/workflows/go.yml)
 [![codecov](https://codecov.io/gh/gin-contrib/rollbar/branch/master/graph/badge.svg)](https://codecov.io/gh/gin-contrib/rollbar)
 [![Go Report Card](https://goreportcard.com/badge/github.com/gin-contrib/rollbar)](https://goreportcard.com/report/github.com/gin-contrib/rollbar)
 [![GoDoc](https://godoc.org/github.com/gin-contrib/rollbar?status.svg)](https://godoc.org/github.com/gin-contrib/rollbar)
@@ -28,19 +28,19 @@ import "github.com/gin-contrib/rollbar"
 package main
 
 import (
-	"github.com/gin-contrib/rollbar"
-	"github.com/gin-gonic/gin"
+  "github.com/gin-contrib/rollbar"
+  "github.com/gin-gonic/gin"
 
-	roll "github.com/rollbar/rollbar-go"
+  roll "github.com/rollbar/rollbar-go"
 )
 
 func main() {
-	roll.SetToken("MY_TOKEN")
-	// roll.SetEnvironment("production") // defaults to "development"
+  roll.SetToken("MY_TOKEN")
+  // roll.SetEnvironment("production") // defaults to "development"
 
-	r := gin.Default()
-	r.Use(rollbar.Recovery(true))
+  r := gin.Default()
+  r.Use(rollbar.Recovery(true))
 
-	r.Run(":8080")
+  r.Run(":8080")
 }
 ```
