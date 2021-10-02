@@ -28,6 +28,8 @@ import "github.com/gin-contrib/rollbar"
 package main
 
 import (
+  "log"
+
   "github.com/gin-contrib/rollbar"
   "github.com/gin-gonic/gin"
 
@@ -41,6 +43,8 @@ func main() {
   r := gin.Default()
   r.Use(rollbar.Recovery(true))
 
-  r.Run(":8080")
+  if err := r.Run(":8080"); err != nil {
+    log.Fatal(err)
+  }
 }
 ```

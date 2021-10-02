@@ -21,8 +21,8 @@ func TestRecovery(t *testing.T) {
 			Err:  baseError,
 			Type: gin.ErrorTypePublic,
 		}
-		err.SetMeta("some data")
-		c.Error(err)
+		_ = err.SetMeta("some data")
+		_ = c.Error(err)
 
 		panic("occurs panic")
 	})
