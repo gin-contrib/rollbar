@@ -13,15 +13,14 @@ import (
 
 // Recovery middleware for rollbar error monitoring
 func Recovery(onlyCrashes bool) gin.HandlerFunc {
-
 	return func(c *gin.Context) {
 		defer func() {
-
 			if rval := recover(); rval != nil {
 				debug.PrintStack()
 
 				rollbar.Critical(errors.New(fmt.Sprint(rval)), getCallers(3), map[string]string{
-					"endpoint": c.Request.RequestURI})
+					"endpoint": c.Request.RequestURI,
+				})
 
 				c.AbortWithStatus(http.StatusInternalServerError)
 			}
