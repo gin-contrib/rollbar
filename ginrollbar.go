@@ -20,7 +20,7 @@ func Recovery(onlyCrashes, printStack bool) gin.HandlerFunc {
 					debug.PrintStack()
 				}
 
-				rollbar.Critical(errors.New(fmt.Sprint(rval)), getCallers(3), map[string]string{
+				rollbar.Critical(errors.New(fmt.Sprint(rval)), getCallers(3), map[string]interface{}{
 					"endpoint": c.Request.RequestURI,
 				})
 
@@ -29,7 +29,7 @@ func Recovery(onlyCrashes, printStack bool) gin.HandlerFunc {
 
 			if !onlyCrashes {
 				for _, item := range c.Errors {
-					rollbar.Error(item.Err, map[string]string{
+					rollbar.Error(item.Err, map[string]interface{}{
 						"meta":     fmt.Sprint(item.Meta),
 						"endpoint": c.Request.RequestURI,
 					})
