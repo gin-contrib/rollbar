@@ -1,4 +1,4 @@
-package rollbar
+package ginrollbar
 
 import (
 	"errors"
@@ -13,7 +13,7 @@ func TestRecovery(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	router := gin.New()
 
-	router.Use(Recovery(false))
+	router.Use(Recovery(false, false))
 
 	router.GET("/", func(c *gin.Context) {
 		baseError := errors.New("test error")

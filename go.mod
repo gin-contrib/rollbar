@@ -1,6 +1,6 @@
-module github.com/gin-contrib/rollbar
+module github.com/neiybor/ginrollbar
 
-go 1.13
+go 1.16
 
 require (
 	github.com/gin-gonic/gin v1.8.0
