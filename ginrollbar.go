@@ -47,6 +47,30 @@ func getCallers(skip int) (pc []uintptr) {
 	return pc[0:i]
 }
 
+// Attempt to send stacktraces from errors that implement the pkg/errors stackTracer interface
+// and fallback to the rollbar.DefaultStackTracer as needed
+func PkgErrorTracer(err error) ([]runtime.Frame, bool) {
+	type stackTracer interface {
+		StackTrace() errors.StackTrace
+	}
+
+	var runtimeFrames []runtime.Frame
+	if stErr, ok := err.(stackTracer); ok {
+		runtimeFrames = make([]runtime.Frame, len(stErr.StackTrace()))
+		for i, f := range stErr.StackTrace() {
+			runtimeFrames[i] = runtime.Frame{
+				Function: FrameName(f),
+				Line:     FrameLine(f),
+				File:     FrameFile(f),
+			}
+		}
+	} else {
+		return rollbar.DefaultStackTracer(err)
+	}
+
+	return runtimeFrames, true
+}
+
 // Helper functions to convert pkg/errors stack traces to be compatible with rollbar
 // Cribbed from pkg/errors
 
