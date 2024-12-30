@@ -5,7 +5,7 @@ go 1.21.0
 require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/rollbar/rollbar-go v1.4.5
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 )
 
 require (
