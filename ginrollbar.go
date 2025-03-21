@@ -31,9 +31,12 @@ func Recovery(onlyCrashes, printStack bool, requestIdCtxKey string) gin.HandlerF
 				// that number of stack frames. If the map is present it is used as extra custom data in the
 				// item. If a string is present without an error, then we log a message without a stack
 				// trace. If a request is present we extract as much relevant information from it as we can.
-				rollbar.Critical(errors.New(fmt.Sprint(rval)), c.Request, 3, map[string]interface{}{
-					"endpoint": c.Request.RequestURI,
-				})
+				rollbar.Critical(
+					errors.New(fmt.Sprint(rval)),
+					c.Request,
+					3,
+					map[string]interface{}{"endpoint": c.Request.RequestURI},
+				)
 
 				c.AbortWithStatus(http.StatusInternalServerError)
 			}
