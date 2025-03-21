@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"runtime"
 	"runtime/debug"
 
 	"github.com/gin-gonic/gin"
@@ -17,11 +16,7 @@ func Recovery(onlyCrashes bool) gin.HandlerFunc {
 		defer func() {
 			if rval := recover(); rval != nil {
 				debug.PrintStack()
-
-				rollbar.Critical(errors.New(fmt.Sprint(rval)), getCallers(3), map[string]string{
-					"endpoint": c.Request.RequestURI,
-				})
-
+				rollbar.Critical(errors.New(fmt.Sprint(rval)), 3, map[string]string{"endpoint": c.Request.RequestURI})
 				c.AbortWithStatus(http.StatusInternalServerError)
 			}
 
@@ -37,10 +32,4 @@ func Recovery(onlyCrashes bool) gin.HandlerFunc {
 
 		c.Next()
 	}
-}
-
-func getCallers(skip int) (pc []uintptr) {
-	pc = make([]uintptr, 1000)
-	i := runtime.Callers(skip+1, pc)
-	return pc[0:i]
 }
