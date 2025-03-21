@@ -16,7 +16,11 @@ func Recovery(onlyCrashes bool) gin.HandlerFunc {
 		defer func() {
 			if rval := recover(); rval != nil {
 				debug.PrintStack()
-				rollbar.Critical(errors.New(fmt.Sprint(rval)), 3, map[string]string{"endpoint": c.Request.RequestURI})
+				rollbar.Critical(
+					errors.New(fmt.Sprint(rval)),
+					3,
+					map[string]string{"endpoint": c.Request.RequestURI},
+				)
 				c.AbortWithStatus(http.StatusInternalServerError)
 			}
 
