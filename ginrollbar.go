@@ -3,7 +3,6 @@ package ginrollbar
 import (
 	"fmt"
 	"net/http"
-	"runtime"
 	"runtime/debug"
 
 	"github.com/gin-gonic/gin"
@@ -20,9 +19,24 @@ func Recovery(onlyCrashes, printStack bool, requestIdCtxKey string) gin.HandlerF
 					debug.PrintStack()
 				}
 
-				rollbar.Critical(errors.New(fmt.Sprint(rval)), c.Request, getCallers(3), map[string]interface{}{
-					"endpoint": c.Request.RequestURI,
-				})
+				// From the rollbar-go docs:
+				// Critical reports an item with level `critical`. This function recognizes arguments with the following types:
+				//    *http.Request
+				//    error
+				//    string
+				//    map[string]interface{}
+				//    int
+				// The string and error types are mutually exclusive.
+				// If an error is present then a stack trace is captured. If an int is also present then we skip
+				// that number of stack frames. If the map is present it is used as extra custom data in the
+				// item. If a string is present without an error, then we log a message without a stack
+				// trace. If a request is present we extract as much relevant information from it as we can.
+				rollbar.Critical(
+					errors.New(fmt.Sprint(rval)),
+					c.Request,
+					3,
+					map[string]interface{}{"endpoint": c.Request.RequestURI},
+				)
 
 				c.AbortWithStatus(http.StatusInternalServerError)
 			}
@@ -42,10 +56,4 @@ func Recovery(onlyCrashes, printStack bool, requestIdCtxKey string) gin.HandlerF
 
 		c.Next()
 	}
-}
-
-func getCallers(skip int) (pc []uintptr) {
-	pc = make([]uintptr, 1000)
-	i := runtime.Callers(skip+1, pc)
-	return pc[0:i]
 }
