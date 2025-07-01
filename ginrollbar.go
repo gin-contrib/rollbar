@@ -2,7 +2,6 @@ package ginrollbar
 
 import (
 	"fmt"
-	"net/http"
 	"runtime/debug"
 
 	"github.com/gin-gonic/gin"
@@ -10,11 +9,17 @@ import (
 	"github.com/rollbar/rollbar-go"
 )
 
-// Recovery middleware for rollbar error monitoring
-func Recovery(onlyCrashes, printStack bool, requestIdCtxKey string) gin.HandlerFunc {
+// allow monkey-patching
+var (
+	RollbarCritical = rollbar.Critical
+	RollbarError    = rollbar.Error
+)
+
+// Middleware for rollbar error monitoring
+func PanicLogs(printStack bool, requestIdCtxKey string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
-			if rval := recover(); rval != nil {
+			if r := recover(); r != nil {
 				if printStack {
 					debug.PrintStack()
 				}
@@ -31,17 +36,13 @@ func Recovery(onlyCrashes, printStack bool, requestIdCtxKey string) gin.HandlerF
 				// that number of stack frames. If the map is present it is used as extra custom data in the
 				// item. If a string is present without an error, then we log a message without a stack
 				// trace. If a request is present we extract as much relevant information from it as we can.
-				rollbar.Critical(
-					errors.New(fmt.Sprint(rval)),
+				RollbarCritical(
+					errors.New(fmt.Sprint(r)),
 					c.Request,
 					3,
 					map[string]interface{}{"endpoint": c.Request.RequestURI},
 				)
 
-				c.AbortWithStatus(http.StatusInternalServerError)
-			}
-
-			if !onlyCrashes {
 				extraData := make(map[string]interface{})
 				extraData["endpoint"] = c.Request.RequestURI
 				if requestIdCtxKey != "" {
@@ -49,8 +50,10 @@ func Recovery(onlyCrashes, printStack bool, requestIdCtxKey string) gin.HandlerF
 				}
 				for _, item := range c.Errors {
 					extraData["meta"] = fmt.Sprint(item.Meta)
-					rollbar.Error(item.Err, c.Request, extraData)
+					RollbarError(item.Err, c.Request, extraData)
 				}
+
+				panic(r)
 			}
 		}()
 
