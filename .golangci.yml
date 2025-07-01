@@ -1,7 +1,6 @@
+version: "2"
 linters:
-  enable-all: false
-  disable-all: true
-  fast: false
+  default: none
   enable:
     - bodyclose
     - copyloopvar
@@ -13,11 +12,8 @@ linters:
     - goconst
     - gocritic
     - gocyclo
-    - gofmt
-    - goimports
     - goprintffuncname
     - gosec
-    - gosimple
     - govet
     - ineffassign
     - lll
@@ -27,29 +23,88 @@ linters:
     - nolintlint
     - rowserrcheck
     - staticcheck
-    - stylecheck
-    - typecheck
     - unconvert
     - unparam
     - unused
     - whitespace
+  settings:
+    staticcheck:
+      checks:
+        - all
+        - -ST1000
+        - -ST1003
+        - -ST1016
+        - -ST1020
+        - -ST1021
+        - -ST1022
+      initialisms:
+        - ACL
+        - API
+        - ASCII
+        - CPU
+        - CSS
+        - DNS
+        - EOF
+        - GUID
+        - HTML
+        - HTTP
+        - HTTPS
+        - IP
+        - JSON
+        - QPS
+        - RAM
+        - RPC
+        - SLA
+        - SMTP
+        - SQL
+        - SSH
+        - TCP
+        - TLS
+        - TTL
+        - UDP
+        - UI
+        - GID
+        - UID
+        - UUID
+        - URI
+        - URL
+        - UTF8
+        - VM
+        - XML
+        - XMPP
+        - XSRF
+        - XSS
+        - SIP
+        - RTP
+        - AMQP
+        - DB
+        - TS
+      dot-import-whitelist:
+        - fmt
+      http-status-code-whitelist:
+        - "200"
+        - "400"
+        - "404"
+        - "500"
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  enable:
+    - gofmt
     - gofumpt
-
-linters-settings:
-  stylecheck:
-    # STxxxx checks in https://staticcheck.io/docs/configuration/options/#checks
-    # Default: ["*"]
-    checks: ["all", "-ST1000", "-ST1003", "-ST1016", "-ST1020", "-ST1021", "-ST1022"]
-    # https://staticcheck.io/docs/configuration/options/#dot_import_whitelist
-    # Default: ["github.com/mmcloughlin/avo/build", "github.com/mmcloughlin/avo/operand", "github.com/mmcloughlin/avo/reg"]
-    dot-import-whitelist:
-      - fmt
-    # https://staticcheck.io/docs/configuration/options/#initialisms
-    # Default: ["ACL", "API", "ASCII", "CPU", "CSS", "DNS", "EOF", "GUID", "HTML", "HTTP", "HTTPS", "ID", "IP", "JSON", "QPS", "RAM", "RPC", "SLA", "SMTP", "SQL", "SSH", "TCP", "TLS", "TTL", "UDP", "UI", "GID", "UID", "UUID", "URI", "URL", "UTF8", "VM", "XML", "XMPP", "XSRF", "XSS", "SIP", "RTP", "AMQP", "DB", "TS"]
-    initialisms: ["ACL", "API", "ASCII", "CPU", "CSS", "DNS", "EOF", "GUID", "HTML", "HTTP", "HTTPS", "IP", "JSON", "QPS", "RAM", "RPC", "SLA", "SMTP", "SQL", "SSH", "TCP", "TLS", "TTL", "UDP", "UI", "GID", "UID", "UUID", "URI", "URL", "UTF8", "VM", "XML", "XMPP", "XSRF", "XSS", "SIP", "RTP", "AMQP", "DB", "TS"]
-    # https://staticcheck.io/docs/configuration/options/#http_status_code_whitelist
-    # Default: ["200", "400", "404", "500"]
-    http-status-code-whitelist: ["200", "400", "404", "500"]
-
-run:
-  timeout: 3m
+    - goimports
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
