@@ -27,7 +27,7 @@ func TestLogPanicsToRollbar(t *testing.T) {
 		Type: gin.ErrorTypePublic,
 	}
 	testError.SetMeta("some data")
-	router.Use(PanicLogs(false, false, ""))
+	router.Use(PanicLogs(false, ""))
 	router.GET("/", func(c *gin.Context) {
 		_ = c.Error(testError)
 		_ = c.Error(testError)

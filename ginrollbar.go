@@ -16,7 +16,7 @@ var (
 )
 
 // Middleware for rollbar error monitoring
-func PanicLogs(onlyCrashes, printStack bool, requestIdCtxKey string) gin.HandlerFunc {
+func PanicLogs(printStack bool, requestIdCtxKey string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
 			if r := recover(); r != nil {
