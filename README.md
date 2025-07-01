@@ -41,7 +41,7 @@ func main() {
 
   r := gin.Default()
   // This will not consume the panic, it'll log the panic to rollbar then the application will crash
-	r.Use(ginrollbar.PanicLogs(false, ""))
+  r.Use(ginrollbar.PanicLogs(false, ""))
 
   if err := r.Run(":8080"); err != nil {
     log.Fatal(err)
