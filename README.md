@@ -1,6 +1,7 @@
 # rollbar
 
 [![Run Tests](https://github.com/gin-contrib/rollbar/actions/workflows/go.yml/badge.svg)](https://github.com/gin-contrib/rollbar/actions/workflows/go.yml)
+[![Trivy Security Scan](https://github.com/gin-contrib/rollbar/actions/workflows/trivy-scan.yml/badge.svg)](https://github.com/gin-contrib/rollbar/actions/workflows/trivy-scan.yml)
 [![codecov](https://codecov.io/gh/gin-contrib/rollbar/branch/master/graph/badge.svg)](https://codecov.io/gh/gin-contrib/rollbar)
 [![Go Report Card](https://goreportcard.com/badge/github.com/gin-contrib/rollbar)](https://goreportcard.com/report/github.com/gin-contrib/rollbar)
 [![GoDoc](https://godoc.org/github.com/gin-contrib/rollbar?status.svg)](https://godoc.org/github.com/gin-contrib/rollbar)
