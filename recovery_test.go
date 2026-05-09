@@ -1,6 +1,7 @@
 package rollbar
 
 import (
+	"context"
 	"errors"
 	"net/http/httptest"
 	"testing"
@@ -32,7 +33,7 @@ func TestRecovery(t *testing.T) {
 }
 
 func performRequest(method, target string, router *gin.Engine) *httptest.ResponseRecorder {
-	r := httptest.NewRequest(method, target, nil)
+	r := httptest.NewRequestWithContext(context.Background(), method, target, nil)
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, r)
 	return w
