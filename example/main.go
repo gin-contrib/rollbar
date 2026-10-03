@@ -4,8 +4,8 @@ import (
 	"log"
 
 	"github.com/gin-contrib/rollbar"
-	"github.com/gin-gonic/gin"
 
+	"github.com/gin-gonic/gin"
 	roll "github.com/rollbar/rollbar-go"
 )
 
