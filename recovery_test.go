@@ -1,7 +1,6 @@
 package rollbar
 
 import (
-	"context"
 	"errors"
 	"net/http/httptest"
 	"testing"
@@ -28,12 +27,16 @@ func TestRecovery(t *testing.T) {
 		panic("occurs panic")
 	})
 
-	w := performRequest("GET", "/", router)
+	w := performRequest(t, "GET", "/", router)
 	assert.Equal(t, 500, w.Code)
 }
 
-func performRequest(method, target string, router *gin.Engine) *httptest.ResponseRecorder {
-	r := httptest.NewRequestWithContext(context.Background(), method, target, nil)
+func performRequest(
+	t testing.TB,
+	method, target string,
+	router *gin.Engine,
+) *httptest.ResponseRecorder {
+	r := httptest.NewRequestWithContext(t.Context(), method, target, nil)
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, r)
 	return w
